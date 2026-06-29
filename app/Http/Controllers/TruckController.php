@@ -26,11 +26,19 @@ class TruckController extends Controller
             'year' => 'required|integer|min:1900|max:' . date('Y'),
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
+            'engine' => 'nullable|string',
+            'transmission' => 'nullable|string',
+            'mileage' => 'nullable|integer|min:0',
             'is_available' => 'boolean',
         ]);
 
         Truck::create($validated);
         return redirect()->route('trucks.index')->with('success', 'Грузовик добавлен!');
+    }
+
+    public function show(Truck $truck)
+    {
+        return view('trucks.show', compact('truck'));
     }
 
     public function edit(Truck $truck)
@@ -46,6 +54,9 @@ class TruckController extends Controller
             'year' => 'required|integer|min:1900|max:' . date('Y'),
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
+            'engine' => 'nullable|string',
+            'transmission' => 'nullable|string',
+            'mileage' => 'nullable|integer|min:0',
             'is_available' => 'boolean',
         ]);
 

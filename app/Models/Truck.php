@@ -2,23 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Truck extends Model
 {
+    use HasFactory;
     protected $fillable = [
-        'title', 'brand', 'year', 'price',
-        'description', 'load_capacity', 'body_type', 'is_active'
+        'brand', 'model', 'year', 'price', 'image',
+        'description', 'engine', 'transmission', 'mileage',
+        'is_available', 'views'
     ];
-
-    public function images()
-    {
-        return $this->hasMany(TruckImage::class);
-    }
-
-    public function mainImage()
-    {
-        return $this->hasOne(TruckImage::class)->where('is_main', true);
-    }
 }

@@ -6,28 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('trucks', function (Blueprint $table) {
             $table->id();
-            $table->string('title');           // Название: MAN TGS 26.440
-            $table->string('brand');           // MAN, КАМАЗ, Volvo...
+            $table->string('brand');
+            $table->string('model');
             $table->integer('year');
-            $table->decimal('price', 12, 2)->nullable();
-            $table->text('description')->nullable();
-            $table->string('load_capacity')->nullable(); // Грузоподъёмность
-            $table->string('body_type')->nullable();     // Самосвал, фура...
-            $table->boolean('is_active')->default(true);
+            $table->decimal('price', 12, 2);
+            $table->string('image')->nullable();
+            $table->text('description');
+            $table->string('engine')->nullable();
+            $table->string('transmission')->nullable();
+            $table->integer('mileage')->nullable();
+            $table->boolean('is_available')->default(true);
+            $table->integer('views')->default(0);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('trucks');
