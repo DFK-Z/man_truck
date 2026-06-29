@@ -7,31 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Truck extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'brand',
-        'model',
-        'year',
-        'price',
-        'image',
-        'description',
-        'engine',
-        'transmission',
-        'mileage',
-        'is_available',
-        'views'
+        'title', 'brand', 'year', 'price',
+        'description', 'load_capacity', 'body_type', 'is_active'
     ];
 
-    protected $casts = [
-        'price' => 'decimal:2',
-        'year' => 'integer',
-        'is_available' => 'boolean'
-    ];
-
-    // Аксессор для форматирования цены
-    public function getFormattedPriceAttribute()
+    public function images()
     {
-        return number_format($this->price, 0, ',', ' ') . ' ₽';
+        return $this->hasMany(TruckImage::class);
+    }
+
+    public function mainImage()
+    {
+        return $this->hasOne(TruckImage::class)->where('is_main', true);
     }
 }

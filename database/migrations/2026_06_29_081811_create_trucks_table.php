@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('trucks', function (Blueprint $table) {
             $table->id();
-            $table->string('brand');
-            $table->string('model');
+            $table->string('title');           // Название: MAN TGS 26.440
+            $table->string('brand');           // MAN, КАМАЗ, Volvo...
             $table->integer('year');
-            $table->decimal('price', 12, 2);
-            $table->string('image')->nullable();
-            $table->text('description');
-            $table->string('engine')->nullable();
-            $table->string('transmission')->nullable();
-            $table->integer('mileage')->nullable();
-            $table->boolean('is_available')->default(true);
-            $table->integer('views')->default(0);
+            $table->decimal('price', 12, 2)->nullable();
+            $table->text('description')->nullable();
+            $table->string('load_capacity')->nullable(); // Грузоподъёмность
+            $table->string('body_type')->nullable();     // Самосвал, фура...
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
