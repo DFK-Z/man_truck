@@ -1,0 +1,474 @@
+{{-- resources/views/welcome.blade.php --}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>{{ config('app.name') }} - Продажа грузовиков</title>
+    <meta name="description" content="Продажа грузовиков и спецтехники. Индивидуальный предприниматель Авакян Ш.В.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Оранжевая цветовая схема */
+        :root {
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --orange-700: #c2410c;
+            --orange-800: #9a3412;
+            --orange-900: #7c2d12;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .truck-card {
+            transition: all 0.3s ease;
+        }
+        .truck-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(234, 88, 12, 0.15);
+        }
+
+        .mobile-menu {
+            transition: max-height 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #ea580c 0%, #9a3412 100%);
+        }
+
+        .btn-orange {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-orange:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.4);
+        }
+
+        .btn-orange-outline {
+            border: 2px solid #f97316;
+            color: #f97316;
+            transition: all 0.3s ease;
+        }
+        .btn-orange-outline:hover {
+            background: #f97316;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .badge-orange {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        .stat-number {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.25rem !important;
+                line-height: 1.2 !important;
+            }
+            .hero-subtitle {
+                font-size: 1.125rem !important;
+            }
+            .contact-info {
+                font-size: 0.875rem !important;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .hero-title {
+                font-size: 3rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50">
+
+    <!-- ==================== НАВИГАЦИЯ ==================== -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b-2 border-orange-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- Логотип -->
+                <div class="flex items-center flex-shrink-0">
+                    <a href="/" class="text-2xl md:text-3xl font-bold">
+                        🚛 <span class="hidden xs:inline text-orange-600">Truck</span><span class="text-gray-700">Market</span>
+                    </a>
+                </div>
+
+                <!-- Десктопное меню -->
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <a href="#trucks" class="text-gray-700 hover:text-orange-600 transition font-medium">Грузовики</a>
+                    <a href="#about" class="text-gray-700 hover:text-orange-600 transition font-medium">О нас</a>
+                    <a href="#contacts" class="text-gray-700 hover:text-orange-600 transition font-medium">Контакты</a>
+                    @auth
+                        <a href="/admin" class="btn-orange text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                            Админка
+                        </a>
+                    @else
+                        <a href="/login" class="text-gray-700 hover:text-orange-600 transition font-medium">Войти</a>
+                    @endauth
+                </div>
+
+                <!-- Мобильная кнопка меню -->
+                <div class="md:hidden flex items-center gap-2">
+                    <a href="tel:89023143540" class="btn-orange text-white px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-1">
+                        <span class="text-lg">📞</span>
+                        <span class="hidden xs:inline">Позвонить</span>
+                    </a>
+                    <button id="menuToggle" class="text-gray-700 hover:text-orange-600 focus:outline-none p-2 rounded-lg hover:bg-orange-50 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Мобильное меню -->
+            <div id="mobileMenu" class="mobile-menu md:hidden bg-white border-t border-gray-100">
+                <div class="py-3 space-y-2">
+                    <a href="#trucks" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Грузовики</a>
+                    <a href="#about" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">О нас</a>
+                    <a href="#contacts" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Контакты</a>
+                    @auth
+                        <a href="/admin" class="block px-4 py-2 text-orange-600 font-semibold hover:bg-orange-50 rounded-lg transition">Админка</a>
+                    @else
+                        <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Войти</a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO СЕКЦИЯ ==================== -->
+    <section class="hero-gradient text-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden relative">
+        <!-- Декоративные элементы -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div class="order-2 lg:order-1 text-center lg:text-left">
+                    <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
+                        Продажа грузовиков
+                        <span class="block text-orange-200 mt-1">в Волгограде</span>
+                    </h1>
+                    <p class="hero-subtitle text-base sm:text-lg md:text-xl mt-4 text-orange-100 max-w-2xl mx-auto lg:mx-0">
+                        Надежная техника для вашего бизнеса. Гарантия качества и сервисное обслуживание.
+                    </p>
+                    <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+                        <a href="#trucks" class="bg-white text-orange-600 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-orange-50 transition shadow-lg text-center">
+                            📋 Смотреть каталог
+                        </a>
+                        <a href="#contacts" class="border-2 border-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition text-center">
+                            📞 Связаться
+                        </a>
+                    </div>
+
+                    <!-- Быстрые цифры -->
+                    <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+                        <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
+                            <div class="text-2xl sm:text-3xl font-bold text-white">10+</div>
+                            <div class="text-xs sm:text-sm text-orange-200">Моделей</div>
+                        </div>
+                        <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
+                            <div class="text-2xl sm:text-3xl font-bold text-white">5 лет</div>
+                            <div class="text-xs sm:text-sm text-orange-200">Опыта</div>
+                        </div>
+                        <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
+                            <div class="text-2xl sm:text-3xl font-bold text-white">100%</div>
+                            <div class="text-xs sm:text-sm text-orange-200">Гарантия</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 lg:order-2">
+                    <div class="relative">
+                        <img src="{{ asset('images/mantruck-1.jpg') }}"
+                             alt="Грузовик"
+                             class="rounded-2xl shadow-2xl w-full h-auto max-h-[400px] sm:max-h-[500px] object-cover border-4 border-white/20"
+                             loading="lazy">
+                        <div class="absolute -bottom-4 -right-4 bg-white text-gray-800 rounded-xl shadow-lg px-4 py-2 sm:px-6 sm:py-3 hidden sm:block">
+                            <span class="font-bold text-orange-600">✓</span> В наличии
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== О НАС ==================== -->
+    <section id="about" class="py-12 sm:py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-orange-50 to-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-sm border border-orange-200">
+                <div class="grid md:grid-cols-2 gap-6 md:gap-10">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-800">ИНДИВИДУАЛЬНЫЙ ПРЕДПРИНИМАТЕЛЬ</h2>
+                        <p class="text-lg sm:text-xl font-semibold text-orange-600 mt-2">АВАКЯН ШАГЕН ВАРАЗДАТОВИЧ</p>
+                        <p class="text-gray-600 mt-1 text-sm sm:text-base">ОТ 27.12.2018</p>
+
+                        <div class="mt-4 sm:mt-6 space-y-1.5 sm:space-y-2 text-sm sm:text-base">
+                            <p><span class="font-semibold">ИНН:</span> 344597041102</p>
+                            <p><span class="font-semibold">ОГРНИП:</span> 318344300129387</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg sm:text-xl text-gray-800">Перевозка строительных материалов:</h3>
+                        <ul class="mt-3 space-y-1.5 text-sm sm:text-base text-gray-600">
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-0.5 font-bold">✓</span>
+                                <span>Песок и щебень</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-0.5 font-bold">✓</span>
+                                <span>Асфальт и бетонная смесь</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-0.5 font-bold">✓</span>
+                                <span>Строительные блоки</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-orange-500 mt-0.5 font-bold">✓</span>
+                                <span>Камни и другие материалы</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== КАТАЛОГ ГРУЗОВИКОВ ==================== -->
+    <section id="trucks" class="py-12 sm:py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Наши грузовики</h2>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
+                <p class="text-gray-600 mt-3 text-sm sm:text-base">Выберите подходящую технику для ваших задач</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                @forelse($trucks ?? [] as $truck)
+                    <div class="truck-card bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl border-t-4 border-orange-500">
+                        <div class="relative">
+                            @if($truck->image)
+                                <img src="{{ Storage::url($truck->image) }}"
+                                     alt="{{ $truck->brand }} {{ $truck->model }}"
+                                     class="w-full h-48 sm:h-56 object-cover"
+                                     loading="lazy">
+                            @else
+                                <div class="w-full h-48 sm:h-56 bg-orange-50 flex items-center justify-center text-orange-300">
+                                    <span class="text-sm">Нет фото</span>
+                                </div>
+                            @endif
+                            @if($truck->is_available)
+                                <span class="absolute top-3 right-3 badge-orange text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                                    В наличии
+                                </span>
+                            @endif
+                        </div>
+
+                        <div class="p-4 sm:p-6">
+                            <div class="flex flex-wrap justify-between items-start gap-2">
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 truncate">{{ $truck->brand }} {{ $truck->model }}</h3>
+                                    <p class="text-gray-500 text-sm">{{ $truck->year }} год</p>
+                                </div>
+                                <span class="text-xl sm:text-2xl font-bold text-orange-600 whitespace-nowrap">{{ $truck->formatted_price }}</span>
+                            </div>
+
+                            <p class="text-gray-600 mt-2 text-sm line-clamp-2">{{ $truck->description }}</p>
+
+                            <div class="mt-3 flex flex-wrap gap-1.5 sm:gap-2">
+                                @if($truck->engine)
+                                    <span class="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full truncate max-w-full">
+                                        🔧 {{ Str::limit($truck->engine, 20) }}
+                                    </span>
+                                @endif
+                                @if($truck->mileage)
+                                    <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
+                                        📊 {{ number_format($truck->mileage, 0, '', ' ') }} км
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="mt-4 flex flex-col xs:flex-row justify-between items-stretch xs:items-center gap-2">
+                                <span class="text-xs sm:text-sm text-gray-500 text-center xs:text-left">👁 {{ $truck->views }} просмотров</span>
+                                <a href="/truck/{{ $truck->id }}"
+                                   class="btn-orange text-white px-4 py-2 rounded-lg text-sm font-semibold text-center">
+                                    Подробнее →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-12 text-gray-500">
+                        <p class="text-xl">Грузовики скоро появятся</p>
+                        <p class="mt-2 text-sm">Следите за обновлениями</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== КОНТАКТЫ ==================== -->
+    <section id="contacts" class="py-12 sm:py-16 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">Контакты</h2>
+                    <div class="w-16 h-1 bg-orange-500 mt-3 rounded-full"></div>
+                    <div class="mt-6 space-y-4 sm:space-y-5">
+                        <div class="flex items-start gap-3 contact-info hover:bg-orange-50 p-3 rounded-lg transition">
+                            <span class="text-2xl flex-shrink-0">📍</span>
+                            <div>
+                                <p class="font-semibold text-sm sm:text-base">Юридический адрес:</p>
+                                <p class="text-gray-600 text-sm sm:text-base">400038, Волгоградская обл. Городищенский район, с. Студено-Яблоновка, дом 45а</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 contact-info hover:bg-orange-50 p-3 rounded-lg transition">
+                            <span class="text-2xl flex-shrink-0">🏢</span>
+                            <div>
+                                <p class="font-semibold text-sm sm:text-base">Фактический адрес:</p>
+                                <p class="text-gray-600 text-sm sm:text-base">400120, г.Волгоград, ул.Неждановой, дом 10а</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 contact-info hover:bg-orange-50 p-3 rounded-lg transition">
+                            <span class="text-2xl flex-shrink-0">📞</span>
+                            <div>
+                                <p class="font-semibold text-sm sm:text-base">Телефон:</p>
+                                <p class="text-gray-600 text-sm sm:text-base">
+                                    <a href="tel:89023143540" class="hover:text-orange-600 transition font-medium">
+                                        8 (902) 314-35-40
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 contact-info hover:bg-orange-50 p-3 rounded-lg transition">
+                            <span class="text-2xl flex-shrink-0">✉️</span>
+                            <div>
+                                <p class="font-semibold text-sm sm:text-base">Email:</p>
+                                <p class="text-gray-600 text-sm sm:text-base break-all">
+                                    <a href="mailto:guga-2005@mail.ru" class="hover:text-orange-600 transition">
+                                        guga-2005@mail.ru
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 sm:p-8 border border-orange-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Часы работы</h3>
+                        <div class="space-y-2 text-gray-600 text-sm sm:text-base">
+                            <p class="flex justify-between border-b border-orange-100 pb-2">
+                                <span>Пн-Пт:</span>
+                                <span class="font-medium text-orange-600">9:00 - 18:00</span>
+                            </p>
+                            <p class="flex justify-between border-b border-orange-100 pb-2">
+                                <span>Сб:</span>
+                                <span class="font-medium text-orange-600">10:00 - 15:00</span>
+                            </p>
+                            <p class="flex justify-between pb-2">
+                                <span>Вс:</span>
+                                <span class="font-medium text-gray-400">Выходной</span>
+                            </p>
+                        </div>
+
+                        <div class="mt-6 p-4 bg-white rounded-lg shadow-sm border border-orange-100">
+                            <p class="font-semibold text-gray-700 text-sm sm:text-center">Свяжитесь с нами удобным способом</p>
+                            <div class="mt-3 flex flex-col sm:flex-row gap-3">
+                                <a href="tel:89023143540"
+                                   class="btn-orange text-white px-6 py-2.5 rounded-lg text-center font-semibold text-sm sm:text-base">
+                                    📞 Позвонить
+                                </a>
+                                <a href="mailto:guga-2005@mail.ru"
+                                   class="btn-orange-outline px-6 py-2.5 rounded-lg text-center font-semibold text-sm sm:text-base">
+                                    ✉️ Написать
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ПОДВАЛ ==================== -->
+    <footer class="bg-gray-900 text-white py-6 sm:py-8 border-t-4 border-orange-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-sm sm:text-base">© {{ date('Y') }} ИП Авакян Ш.В. Все права защищены.</p>
+                <p class="text-orange-400 text-xs sm:text-sm mt-1">Продажа грузовиков в Волгограде</p>
+                <div class="mt-4 flex justify-center gap-4 text-xs sm:text-sm">
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition">Политика конфиденциальности</a>
+                    <span class="text-gray-600">|</span>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== СКРИПТЫ ==================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Мобильное меню
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
+                });
+
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('open');
+                    });
+                });
+            }
+
+            // Плавная прокрутка
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
