@@ -10,9 +10,9 @@ class TruckController extends Controller
 {
 public function index()
 {
-    $trucks = Truck::where('is_available', true)->latest()->get();
+    $trucks = Truck::all(); // ← УБИРАЕМ where('is_available', true)
     $reviews = Review::with('user')->latest()->take(6)->get();
-
+    $reviews = Review::where('is_approved', true)->with('user')->latest()->take(6)->get();
     return view('welcome', compact('trucks', 'reviews'));
 }
 

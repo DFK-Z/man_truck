@@ -9,8 +9,6 @@ class Truck extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'brand', 'model', 'year', 'price', 'image',
-        'description', 'engine', 'transmission', 'mileage',
-        'is_available', 'views'
+        'brand', 'model', 'image', 'views'
     ];
 }

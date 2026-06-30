@@ -125,7 +125,7 @@
                 <!-- Логотип -->
                 <div class="flex items-center flex-shrink-0">
                     <a href="/" class="text-2xl md:text-3xl font-bold">
-                        🚛 <span class="hidden xs:inline text-orange-600">Truck</span><span class="text-gray-700">Market</span>
+                        🚛 <span class=" text-orange-700">Логистика</span>
                     </a>
                 </div>
 
@@ -221,16 +221,16 @@
 
                     <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
                         <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
-                            <div class="text-2xl sm:text-3xl font-bold text-white">10+</div>
-                            <div class="text-xs sm:text-sm text-orange-200">Моделей</div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white">Лучшая</div>
+                            <div class="text-xs sm:text-sm text-orange-200">Цена</div>
                         </div>
                         <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
-                            <div class="text-2xl sm:text-3xl font-bold text-white">5 лет</div>
+                            <div class="text-2xl sm:text-3xl font-bold text-white">10+ лет</div>
                             <div class="text-xs sm:text-sm text-orange-200">Опыта</div>
                         </div>
                         <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
                             <div class="text-2xl sm:text-3xl font-bold text-white">100%</div>
-                            <div class="text-xs sm:text-sm text-orange-200">Гарантия</div>
+                            <div class="text-xs sm:text-sm text-orange-200">Гарантия работы</div>
                         </div>
                     </div>
                 </div>
@@ -241,9 +241,6 @@
                              alt="Грузовик"
                              class="rounded-2xl shadow-2xl w-full h-auto max-h-[400px] sm:max-h-[500px] object-cover border-4 border-white/20"
                              loading="lazy">
-                        <div class="absolute -bottom-4 -right-4 bg-white text-gray-800 rounded-xl shadow-lg px-4 py-2 sm:px-6 sm:py-3 hidden sm:block">
-                            <span class="font-bold text-orange-600">✓</span> В наличии
-                        </div>
                     </div>
                 </div>
             </div>
@@ -314,39 +311,17 @@
                                     <span class="text-sm">Нет фото</span>
                                 </div>
                             @endif
-                            @if($truck->is_available)
-                                <span class="absolute top-3 right-3 badge-orange text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                                    В наличии
-                                </span>
-                            @endif
                         </div>
 
                         <div class="p-4 sm:p-6">
                             <div class="flex flex-wrap justify-between items-start gap-2">
                                 <div class="flex-1 min-w-0">
                                     <h3 class="text-lg sm:text-xl font-bold text-gray-800 truncate">{{ $truck->brand }} {{ $truck->model }}</h3>
-                                    <p class="text-gray-500 text-sm">{{ $truck->year }} год</p>
                                 </div>
                                 <span class="text-xl sm:text-2xl font-bold text-orange-600 whitespace-nowrap">{{ $truck->formatted_price }}</span>
                             </div>
 
-                            <p class="text-gray-600 mt-2 text-sm line-clamp-2">{{ $truck->description }}</p>
-
-                            <div class="mt-3 flex flex-wrap gap-1.5 sm:gap-2">
-                                @if($truck->engine)
-                                    <span class="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full truncate max-w-full">
-                                        🔧 {{ Str::limit($truck->engine, 20) }}
-                                    </span>
-                                @endif
-                                @if($truck->mileage)
-                                    <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
-                                        📊 {{ number_format($truck->mileage, 0, '', ' ') }} км
-                                    </span>
-                                @endif
-                            </div>
-
                             <div class="mt-4 flex flex-col xs:flex-row justify-between items-stretch xs:items-center gap-2">
-                                <span class="text-xs sm:text-sm text-gray-500 text-center xs:text-left">👁 {{ $truck->views }} просмотров</span>
                                 <a href="/truck/{{ $truck->id }}"
                                    class="btn-orange text-white px-4 py-2 rounded-lg text-sm font-semibold text-center">
                                     Подробнее →
@@ -473,9 +448,12 @@
                             <span class="text-2xl flex-shrink-0">📞</span>
                             <div>
                                 <p class="font-semibold text-sm sm:text-base">Телефон:</p>
-                                <p class="text-gray-600 text-sm sm:text-base">
+                                <p class="text-gray-600 text-sm sm:text-base grid">
                                     <a href="tel:89023143540" class="hover:text-orange-600 transition font-medium">
-                                        8 (902) 314-35-40
+                                        +7 (902) 314-35-40
+                                    </a>
+                                    <a href="tel:89023143540" class="hover:text-orange-600 transition font-medium">
+                                        +7 (902) 363-54-00
                                     </a>
                                 </p>
                             </div>
