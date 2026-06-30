@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Truck;
 use Illuminate\Http\Request;
+use App\Models\Review;
 
 class TruckController extends Controller
 {
     public function index()
-    {
-        $trucks = Truck::all();
-        return view('trucks.index', compact('trucks'));
-    }
+{
+    $trucks = Truck::where('is_available', true)->latest()->get();
+    $reviews = Review::where('is_approved', true)->latest()->take(6)->get(); // последние 6 отзывов
+
+    return view('welcome', compact('trucks', 'reviews'));
+}
 
     public function create()
     {

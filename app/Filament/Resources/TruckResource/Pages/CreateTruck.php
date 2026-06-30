@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Trucks\Pages;
+namespace App\Filament\Resources\TruckResource\Pages;
 
-use App\Filament\Resources\Trucks\TruckResource;
+use App\Filament\Resources\TruckResource;
+use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateTruck extends CreateRecord

@@ -8,21 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('trucks', function (Blueprint $table) {
-            $table->id();
-            $table->string('brand');
-            $table->string('model');
-            $table->integer('year');
-            $table->decimal('price', 12, 2);
-            $table->string('image')->nullable();
-            $table->text('description');
-            $table->string('engine')->nullable();
-            $table->string('transmission')->nullable();
-            $table->integer('mileage')->nullable();
-            $table->boolean('is_available')->default(true);
-            $table->integer('views')->default(0);
-            $table->timestamps();
-        });
+Schema::create('trucks', function (Blueprint $table) {
+        $table->id();
+        $table->string('brand');
+        $table->string('model');
+        $table->integer('year');
+        $table->decimal('price', 12, 2);
+        $table->string('image')->nullable();
+        $table->text('description');
+        $table->timestamps();
+    });
     }
 
     public function down(): void

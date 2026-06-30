@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Trucks\Pages;
+namespace App\Filament\Resources\TruckResource\Pages;
 
-use App\Filament\Resources\Trucks\TruckResource;
-use Filament\Actions\CreateAction;
+use App\Filament\Resources\TruckResource;
+use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListTrucks extends ListRecords
@@ -13,7 +13,7 @@ class ListTrucks extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }

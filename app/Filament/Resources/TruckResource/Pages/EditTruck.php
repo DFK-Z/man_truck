@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Trucks\Pages;
+namespace App\Filament\Resources\TruckResource\Pages;
 
-use App\Filament\Resources\Trucks\TruckResource;
-use Filament\Actions\DeleteAction;
+use App\Filament\Resources\TruckResource;
+use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTruck extends EditRecord
@@ -13,7 +13,7 @@ class EditTruck extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }
