@@ -96,6 +96,50 @@
             font-size: 1.25rem;
         }
 
+        /* ===== КНОПКА "НАВЕРХ" ===== */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-top-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 30px rgba(234, 88, 12, 0.6);
+        }
+        .scroll-top-btn:active {
+            transform: scale(0.95);
+        }
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .scroll-top-btn svg {
+            width: 28px;
+            height: 28px;
+            stroke: white;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         @media (max-width: 640px) {
             .hero-title {
                 font-size: 2.25rem !important;
@@ -106,6 +150,16 @@
             }
             .contact-info {
                 font-size: 0.875rem !important;
+            }
+            .scroll-top-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 48px;
+                height: 48px;
+            }
+            .scroll-top-btn svg {
+                width: 24px;
+                height: 24px;
             }
         }
 
@@ -219,18 +273,28 @@
                         </a>
                     </div>
 
-                    <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
-                        <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
-                            <div class="text-2xl sm:text-3xl font-bold text-white">Лучшая</div>
-                            <div class="text-xs sm:text-sm text-orange-200">Цена</div>
+                    <!-- ========== НОВЫЙ КОМПАКТНЫЙ БЛОК ПРЕИМУЩЕСТВ ========== -->
+                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto lg:mx-0">
+                        <div class="flex items-center justify-center gap-3 bg-white/10 rounded-xl backdrop-blur-sm px-4 py-3">
+                            <span class="text-2xl">💰</span>
+                            <div>
+                                <div class="text-sm font-semibold text-white">Лучшие цены</div>
+                                <div class="text-xs text-orange-200">Прямые поставки</div>
+                            </div>
                         </div>
-                        <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
-                            <div class="text-2xl sm:text-3xl font-bold text-white">10+ лет</div>
-                            <div class="text-xs sm:text-sm text-orange-200">Опыта</div>
+                        <div class="flex items-center justify-center gap-3 bg-white/10 rounded-xl backdrop-blur-sm px-4 py-3">
+                            <span class="text-2xl">⏳</span>
+                            <div>
+                                <div class="text-sm font-semibold text-white">10+ лет опыта</div>
+                                <div class="text-xs text-orange-200">Надёжность</div>
+                            </div>
                         </div>
-                        <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
-                            <div class="text-2xl sm:text-3xl font-bold text-white">100%</div>
-                            <div class="text-xs sm:text-sm text-orange-200">Гарантия работы</div>
+                        <div class="flex items-center justify-center gap-3 bg-white/10 rounded-xl backdrop-blur-sm px-4 py-3">
+                            <span class="text-2xl">🛡️</span>
+                            <div>
+                                <div class="text-sm font-semibold text-white">100% гарантия</div>
+                                <div class="text-xs text-orange-200">Качества и сроков</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -509,12 +573,24 @@
         </div>
     </section>
 
+    <!-- ==================== COOKIE ==================== -->
+    <div id="cookie-consent" class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-sm text-center sm:text-left">
+            🍪 Мы используем cookie для улучшения работы сайта. Продолжая использовать сайт, вы соглашаетесь с
+            <a href="#" class="text-orange-400 hover:underline">политикой конфиденциальности</a>.
+        </p>
+        <button onclick="document.getElementById('cookie-consent').style.display='none'"
+                class="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 whitespace-nowrap">
+            Принять
+        </button>
+    </div>
+
     <!-- ==================== ПОДВАЛ ==================== -->
     <footer class="bg-gray-900 text-white py-6 sm:py-8 border-t-4 border-orange-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <p class="text-sm sm:text-base">© {{ date('Y') }} ИП Авакян Ш.В. Все права защищены.</p>
-                <p class="text-orange-400 text-xs sm:text-sm mt-1">Продажа грузовиков в Волгограде</p>
+                <p class="text-orange-400 text-xs sm:text-sm mt-1">Логистика грузоперевозки в Волгограде</p>
                 <div class="mt-4 flex justify-center gap-4 text-xs sm:text-sm">
                     <a href="#" class="text-gray-400 hover:text-orange-400 transition">Политика конфиденциальности</a>
                     <span class="text-gray-600">|</span>
@@ -523,6 +599,13 @@
             </div>
         </div>
     </footer>
+
+    <!-- ==================== КНОПКА "НАВЕРХ" ==================== -->
+    <button onclick="scrollToTop()" id="scrollTopBtn" class="scroll-top-btn" aria-label="Наверх">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
 
     <!-- ==================== СКРИПТЫ ==================== -->
     <script>
@@ -557,6 +640,24 @@
                     }
                 });
             });
+
+            // ===== КНОПКА "НАВЕРХ" =====
+            const scrollBtn = document.getElementById('scrollTopBtn');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+
+            window.scrollToTop = function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            };
         });
     </script>
 </body>
