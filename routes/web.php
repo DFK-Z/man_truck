@@ -1,20 +1,40 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TruckController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TruckController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 
-// Главная страница
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [TruckController::class, 'index'])->name('home');
+Route::get('/truck/{id}', [TruckController::class, 'show'])->name('truck.detail');
 
-// Ресурсные маршруты для грузовиков
-Route::resource('trucks', TruckController::class);
+// Маршруты для отзывов
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
-// Filament админка (автоматически)
-Route::get('/login', function () {
-    return redirect('/admin/login');
-})->name('login');
 
-// ВСЁ! Никаких лишних маршрутов для админки
+// Простые маршруты для входа
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// ====== ФИКС ДЛЯ FILAMENT ======
+Route::get('/admin/login', function () {
+    return view('login');
+})->name('filament.admin.auth.login');
+
+Route::get('/admin', function () {
+    return redirect('/admin/login');
+})->name('filament.admin.pages.dashboard');
+// ================================
+
+// Админка (только для авторизованных)
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/create', [AdminController::class, 'create'])->name('admin.create');
+    Route::post('/store', [AdminController::class, 'store'])->name('admin.store');
+    Route::get('/{truck}/edit', [AdminController::class, 'edit'])->name('admin.edit');
+    Route::put('/{truck}', [AdminController::class, 'update'])->name('admin.update');
+    Route::delete('/{truck}', [AdminController::class, 'destroy'])->name('admin.destroy');
+});

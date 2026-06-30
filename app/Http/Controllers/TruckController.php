@@ -8,10 +8,10 @@ use App\Models\Review;
 
 class TruckController extends Controller
 {
-    public function index()
+public function index()
 {
     $trucks = Truck::where('is_available', true)->latest()->get();
-    $reviews = Review::where('is_approved', true)->latest()->take(6)->get(); // последние 6 отзывов
+    $reviews = Review::with('user')->latest()->take(6)->get();
 
     return view('welcome', compact('trucks', 'reviews'));
 }
@@ -39,9 +39,11 @@ class TruckController extends Controller
         return redirect()->route('trucks.index')->with('success', 'Грузовик добавлен!');
     }
 
-    public function show(Truck $truck)
+    public function show(Int $id)
     {
-        return view('trucks.show', compact('truck'));
+        $truck = Truck::findOrFail($id);
+        $truck->increment('views');
+        return view('truck-detail', compact('truck'));
     }
 
     public function edit(Truck $truck)

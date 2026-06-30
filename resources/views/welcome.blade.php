@@ -85,16 +85,16 @@
         }
 
         .review-card {
-    transition: all 0.3s ease;
-}
-.review-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-.star {
-    color: #fbbf24;
-    font-size: 1.25rem;
-}
+            transition: all 0.3s ease;
+        }
+        .review-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .star {
+            color: #fbbf24;
+            font-size: 1.25rem;
+        }
 
         @media (max-width: 640px) {
             .hero-title {
@@ -135,10 +135,19 @@
                     <a href="#about" class="text-gray-700 hover:text-orange-600 transition font-medium">О нас</a>
                     <a href="#reviews" class="text-gray-700 hover:text-orange-600 transition font-medium">Отзывы</a>
                     <a href="#contacts" class="text-gray-700 hover:text-orange-600 transition font-medium">Контакты</a>
+
                     @auth
-                        <a href="/admin" class="btn-orange text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                            Админка
+                        @if(Auth::user()->email === 'admin@admin.com')
+                            <a href="/admin" class="btn-orange text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                                Админка
+                            </a>
+                        @endif
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-gray-700 hover:text-orange-600 transition font-medium">
+                            Выйти
                         </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     @else
                         <a href="/login" class="text-gray-700 hover:text-orange-600 transition font-medium">Войти</a>
                     @endauth
@@ -165,8 +174,17 @@
                     <a href="#about" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">О нас</a>
                     <a href="#reviews" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Отзывы</a>
                     <a href="#contacts" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Контакты</a>
+
                     @auth
-                        <a href="/admin" class="block px-4 py-2 text-orange-600 font-semibold hover:bg-orange-50 rounded-lg transition">Админка</a>
+                        @if(Auth::user()->email === 'admin@admin.com')
+                            <a href="/admin" class="block px-4 py-2 text-orange-600 font-semibold hover:bg-orange-50 rounded-lg transition">Админка</a>
+                        @endif
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
+                            Выйти
+                        </a>
+                        <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     @else
                         <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Войти</a>
                     @endauth
@@ -177,7 +195,6 @@
 
     <!-- ==================== HERO СЕКЦИЯ ==================== -->
     <section class="hero-gradient text-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden relative">
-        <!-- Декоративные элементы -->
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full translate-y-1/2 -translate-x-1/2"></div>
@@ -202,7 +219,6 @@
                         </a>
                     </div>
 
-                    <!-- Быстрые цифры -->
                     <div class="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
                         <div class="text-center bg-white/10 rounded-xl backdrop-blur-sm p-4">
                             <div class="text-2xl sm:text-3xl font-bold text-white">10+</div>
@@ -349,102 +365,84 @@
     </section>
 
     <!-- ==================== ОТЗЫВЫ ==================== -->
-    <section id="reviews" class="py-12 sm:py-16 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8 sm:mb-12">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">Отзывы клиентов</h2>
-                <div class="w-24 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
-                <p class="text-gray-600 mt-3 text-sm sm:text-base">Что говорят наши клиенты</p>
-            </div>
+    <section id="reviews" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-gray-800">Отзывы клиентов</h2>
+            <div class="w-24 h-1 bg-orange-500 mx-auto mt-3 rounded-full"></div>
 
-            <!-- Список отзывов -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
                 @forelse($reviews ?? [] as $review)
                     <div class="review-card bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
-                        <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-start justify-between">
                             <div>
-                                <h4 class="font-bold text-gray-800">{{ $review->name }}</h4>
+                                <h4 class="font-bold text-gray-800">{{ $review->user_name }}</h4>
                                 <div class="flex items-center gap-1 mt-1">
                                     @for($i = 1; $i <= 5; $i++)
-                                        <span class="star">{{ $i <= $review->rating ? '★' : '☆' }}</span>
+                                        <span class="text-yellow-400">{{ $i <= $review->rating ? '★' : '☆' }}</span>
                                     @endfor
                                 </div>
                             </div>
-                            <span class="text-xs text-gray-400">{{ $review->created_at->format('d.m.Y') }}</span>
+                            <span class="text-sm text-gray-400">{{ $review->created_at->format('d.m.Y') }}</span>
                         </div>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ $review->message }}</p>
+                        <p class="text-gray-600 mt-3">{{ $review->message }}</p>
                     </div>
                 @empty
                     <div class="col-span-3 text-center py-8 text-gray-500">
-                        <p class="text-lg">Пока нет отзывов</p>
-                        <p class="text-sm mt-1">Будьте первым!</p>
+                        <p>Пока нет отзывов. Будьте первым!</p>
                     </div>
                 @endforelse
             </div>
 
-            <!-- ====================================================== -->
-            <!-- ============ ФОРМА ДЛЯ ОТЗЫВОВ (ЗДЕСЬ!) ============= -->
-            <!-- ====================================================== -->
-            <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-orange-100">
-                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Оставить отзыв</h3>
-
-                @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
-                        @foreach($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif
-
-                <!-- ↓↓↓ ВОТ ЗДЕСЬ ФОРМА С @csrf ↓↓↓ -->
-                <form action="{{ route('reviews.store') }}" method="POST">
-                    @csrf  <!-- ← ЭТО ОБЯЗАТЕЛЬНО! БЕЗ ЭТОГО БУДЕТ 419 ОШИБКА -->
-
-                    <div class="mb-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ваше имя *</label>
-                        <input type="text" name="name" required
-                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
-                               placeholder="Например: Иван Петров">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email (необязательно)</label>
-                        <input type="email" name="email"
-                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
-                               placeholder="ivan@example.com">
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Оценка</label>
-                        <div class="flex gap-2">
-                            @for($i = 1; $i <= 5; $i++)
-                                <label class="flex items-center gap-1 cursor-pointer">
-                                    <input type="radio" name="rating" value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }}>
-                                    <span class="text-xl">{{ $i }}★</span>
-                                </label>
-                            @endfor
+            <div class="max-w-2xl mx-auto mt-12 bg-white rounded-2xl shadow-lg p-8 border border-orange-100">
+                @auth
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Оставить отзыв</h3>
+                    @if(session('success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <form action="{{ route('reviews.store') }}" method="POST">
+                        @csrf
+                        <div class="mb-4">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Ваше имя</label>
+                            <input type="text" value="{{ Auth::user()->name }}" disabled
+                                   class="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Оценка</label>
+                            <div class="flex gap-2">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <label class="flex items-center gap-1 cursor-pointer">
+                                        <input type="radio" name="rating" value="{{ $i }}" {{ $i == 5 ? 'checked' : '' }}>
+                                        <span class="text-xl">{{ $i }}★</span>
+                                    </label>
+                                @endfor
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Ваш отзыв *</label>
+                            <textarea name="message" required rows="4"
+                                      class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
+                                      placeholder="Расскажите о вашем опыте..."></textarea>
+                        </div>
+                        <button type="submit"
+                                class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition shadow-lg">
+                            📨 Отправить отзыв
+                        </button>
+                    </form>
+                @else
+                    <div class="text-center py-8">
+                        <p class="text-gray-600 text-lg">Чтобы оставить отзыв, необходимо</p>
+                        <div class="mt-4 flex justify-center gap-4">
+                            <a href="{{ route('login') }}" class="btn-orange text-white px-6 py-2 rounded-lg">
+                                Войти
+                            </a>
+                            <a href="{{ route('register') }}" class="btn-orange-outline px-6 py-2 rounded-lg">
+                                Зарегистрироваться
+                            </a>
                         </div>
                     </div>
-
-                    <div class="mb-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ваш отзыв *</label>
-                        <textarea name="message" required rows="4"
-                                  class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition"
-                                  placeholder="Расскажите о вашем опыте работы с нами..."></textarea>
-                    </div>
-
-                    <button type="submit"
-                            class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition shadow-lg">
-                        📨 Отправить отзыв
-                    </button>
-                </form>
-                <!-- ↑↑↑ КОНЕЦ ФОРМЫ ↑↑↑ -->
+                @endauth
             </div>
         </div>
     </section>
@@ -551,7 +549,6 @@
     <!-- ==================== СКРИПТЫ ==================== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Мобильное меню
             const menuToggle = document.getElementById('menuToggle');
             const mobileMenu = document.getElementById('mobileMenu');
 
@@ -567,7 +564,6 @@
                 });
             }
 
-            // Плавная прокрутка
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     const href = this.getAttribute('href');
