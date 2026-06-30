@@ -186,12 +186,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="order-2 lg:order-1 text-center lg:text-left">
-                    <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-                        Продажа грузовиков
+                    <h1 class="hero-title text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">
+                        Логистика грузоперевозки, поставка строительных материалов
                         <span class="block text-orange-200 mt-1">в Волгограде</span>
                     </h1>
                     <p class="hero-subtitle text-base sm:text-lg md:text-xl mt-4 text-orange-100 max-w-2xl mx-auto lg:mx-0">
-                        Надежная техника для вашего бизнеса. Гарантия качества и сервисное обслуживание.
+                        Надежная техника. Гарантия качества
                     </p>
                     <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                         <a href="#trucks" class="bg-white text-orange-600 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-orange-50 transition shadow-lg text-center">
