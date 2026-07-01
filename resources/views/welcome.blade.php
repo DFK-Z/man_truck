@@ -191,7 +191,7 @@
                     <a href="#contacts" class="text-gray-700 hover:text-orange-600 transition font-medium">Контакты</a>
 
                     @auth
-                        @if(Auth::user()->email === 'admin@admin.com')
+                        @if(Auth::user()->isAdmin())
                             <a href="/admin" class="btn-orange text-white px-4 py-2 rounded-lg text-sm font-semibold">
                                 Админка
                             </a>
@@ -230,7 +230,7 @@
                     <a href="#contacts" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">Контакты</a>
 
                     @auth
-                        @if(Auth::user()->email === 'admin@admin.com')
+                        @if(Auth::user()->isAdmin())
                             <a href="/admin" class="block px-4 py-2 text-orange-600 font-semibold hover:bg-orange-50 rounded-lg transition">Админка</a>
                         @endif
                         <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();" class="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition">
@@ -273,7 +273,6 @@
                         </a>
                     </div>
 
-                    <!-- ========== НОВЫЙ КОМПАКТНЫЙ БЛОК ПРЕИМУЩЕСТВ ========== -->
                     <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto lg:mx-0">
                         <div class="flex items-center justify-center gap-3 bg-white/10 rounded-xl backdrop-blur-sm px-4 py-3">
                             <span class="text-2xl">💰</span>
@@ -432,6 +431,13 @@
                 @endforelse
             </div>
 
+            <!-- ===== ССЫЛКА НА ВСЕ ОТЗЫВЫ ===== -->
+            <div class="text-center mt-8">
+                <a href="{{ route('reviews.index') }}" class="btn-orange text-white px-6 py-2 rounded-lg inline-block hover:shadow-lg transition">
+                    Смотреть все отзывы →
+                </a>
+            </div>
+
             <div class="max-w-2xl mx-auto mt-12 bg-white rounded-2xl shadow-lg p-8 border border-orange-100">
                 @auth
                     <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Оставить отзыв</h3>
@@ -541,16 +547,12 @@
                         <h3 class="text-xl font-bold text-gray-800 mb-4">Часы работы</h3>
                         <div class="space-y-2 text-gray-600 text-sm sm:text-base">
                             <p class="flex justify-between border-b border-orange-100 pb-2">
-                                <span>Пн-Пт:</span>
-                                <span class="font-medium text-orange-600">9:00 - 18:00</span>
-                            </p>
-                            <p class="flex justify-between border-b border-orange-100 pb-2">
-                                <span>Сб:</span>
-                                <span class="font-medium text-orange-600">10:00 - 15:00</span>
+                                <span>Ежедневно:</span>
+                                <span class="font-medium text-orange-600">8:00 - 20:00</span>
                             </p>
                             <p class="flex justify-between pb-2">
-                                <span>Вс:</span>
-                                <span class="font-medium text-gray-400">Выходной</span>
+                                <span>Без выходных</span>
+                                <span class="text-green-600 font-medium">✅ Работаем</span>
                             </p>
                         </div>
 
